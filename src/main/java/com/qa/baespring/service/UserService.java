@@ -43,4 +43,11 @@ public class UserService {
 		return repo.saveAndFlush(existing); // send new user info back
 	}
 
+	// delete an existing user
+	public boolean delete(long id) {
+		repo.deleteById(id);
+		return !repo.existsById(id); // want a return true, but if its deleted it will return false
+										// so use !
+	}
+
 }
