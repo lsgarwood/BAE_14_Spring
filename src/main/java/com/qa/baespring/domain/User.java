@@ -8,7 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+// bean - use this class to model a table in a database
 @Entity
+//@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"firstName", "lastName", "username" }) })
 public class User {
 
 	// Sets this column to auto increment without having to enter the Id ourselves
@@ -22,9 +24,13 @@ public class User {
 	// Also use @Column to put a restraint on the column
 	@Column(nullable = false)
 	private String firstName;
+
 	// creates a column called "last_name"
+	@Column(nullable = false)
 	private String lastName;
+
 	// Creates a column called "username"
+	@Column(unique = true)
 	private String username;
 
 	// Default constructor
