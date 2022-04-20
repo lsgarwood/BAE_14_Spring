@@ -17,6 +17,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	// standard data type for id^
 
 	// Properties of the class
 	// Creates a column called "first_name" or use @column to override name
