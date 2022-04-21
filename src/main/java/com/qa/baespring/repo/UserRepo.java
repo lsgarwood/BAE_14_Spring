@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.qa.baespring.domain.User;
@@ -14,12 +15,15 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
 	Optional<User> findByUsername(String username); // use optional for .get() in custom query
 
-//	@Query(value = SELECT)
 	List<User> findByAgeGreaterThanEqual(int age);
 
 	List<User> findByAge(int age);
 
+	@Query(value = "SELECT * FROM user WHERE gender='male'", nativeQuery = true)
 	List<User> findByGender(String gender);
+
+	@Query(value = "SELECT * FROM user WHERE gender='male' AND age>=18", nativeQuery = true)
+	List<User> findByGenderAndAge(String gender, int age);
 
 	// Queries using SQL same as above
 	// can practice SQL in workbench first then put it into value

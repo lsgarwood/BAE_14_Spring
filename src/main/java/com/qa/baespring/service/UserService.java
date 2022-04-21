@@ -54,6 +54,11 @@ public class UserService {
 		return repo.findByGender(gender);
 	}
 
+	// get users by gender specific "male" and age specific ">1=18"
+	public List<User> getByGenderAndAge(String gender, int age) {
+		return repo.findByGenderAndAge(gender, age);
+	}
+
 	// create a new user
 	public User create(User user) {
 		return repo.saveAndFlush(user);
@@ -66,7 +71,8 @@ public class UserService {
 		existing.setLastName(user.getLastName()); // change existing users lastName to new users lastName
 		existing.setUserName(user.getUserName()); // change existing users username to new users username
 		existing.setAge(user.getAge()); // change existing users age to new age
-		return repo.saveAndFlush(existing); // send new user info back
+		return repo.saveAndFlush(existing);// .orElseThrow(UserUpdateUnsuccessfullException::new); // send new user info
+											// back
 	}
 
 	// delete an existing user
