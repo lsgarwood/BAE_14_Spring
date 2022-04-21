@@ -34,16 +34,21 @@ public class UserController { // All request handling
 		return "Hello World";
 	}
 
+	// GetAll
+	@GetMapping("/getAll") // localhost:8080/getAll
+	public ResponseEntity<List<User>> getAll() {
+		return new ResponseEntity<List<User>>(service.getAll(), HttpStatus.OK);
+	}
+
 	// GetByID - get one user
 	@GetMapping("/getById/{id}") // localhost:8080/getById/id
 	public ResponseEntity<User> getById(@PathVariable long id) {
 		return new ResponseEntity<User>(service.getById(id), HttpStatus.OK);
 	}
 
-	// GetAll
-	@GetMapping("/getAll") // localhost:8080/getAll
-	public ResponseEntity<List<User>> getAll() {
-		return new ResponseEntity<List<User>>(service.getAll(), HttpStatus.OK);
+	@GetMapping("/getByUsername/{username}")
+	public ResponseEntity<User> getByUsername(@PathVariable String username) {
+		return new ResponseEntity<User>(service.getByUsername(username), HttpStatus.OK);
 	}
 
 	// Post
