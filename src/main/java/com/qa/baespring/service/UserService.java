@@ -45,9 +45,10 @@ public class UserService {
 
 	// delete an existing user
 	public boolean delete(long id) {
-		repo.deleteById(id);
+		repo.deleteById(id); // if we get past this line with no exception it means we know if it exists or
+								// not, BUT you cannot assume it has been deleted successfully
 		return !repo.existsById(id); // want a return true, but if its deleted it will return false
-										// so use !
+										// so use ! to double check it has actually deleted
 	}
 
 }
