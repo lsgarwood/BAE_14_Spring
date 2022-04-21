@@ -1,5 +1,6 @@
 package com.qa.baespring.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,14 @@ import com.qa.baespring.domain.User;
 public interface UserRepo extends JpaRepository<User, Long> {
 	// extending the JPARepo comes with a lot built in queries/methods
 
-	Optional<User> findUserByUsername(String username); // use optional for .get() in custom query
+	Optional<User> findByUsername(String username); // use optional for .get() in custom query
+
+//	@Query(value = SELECT)
+	List<User> findByAgeGreaterThanEqual(int age);
+
+	List<User> findByAge(int age);
+
+	List<User> findByGender(String gender);
 
 	// Queries using SQL same as above
 	// can practice SQL in workbench first then put it into value

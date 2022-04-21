@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qa.baespring.domain.User;
 import com.qa.baespring.service.UserService;
 
-@RequestMapping("/users")
 @RestController
+@CrossOrigin // where it originates from- requests can come from anywhere on computer
+@RequestMapping("/users")
 public class UserController { // All request handling
 
 	private UserService service;
@@ -46,9 +48,28 @@ public class UserController { // All request handling
 		return new ResponseEntity<User>(service.getById(id), HttpStatus.OK);
 	}
 
+	// getByUsername - get one user by username
 	@GetMapping("/getByUsername/{username}")
 	public ResponseEntity<User> getByUsername(@PathVariable String username) {
 		return new ResponseEntity<User>(service.getByUsername(username), HttpStatus.OK);
+	}
+
+	// getByAge - get users by age
+	@GetMapping("/getByAge/{age}")
+	public ResponseEntity<List<User>> getByAge(@PathVariable int age) {
+		return new ResponseEntity<List<User>>(service.getByAge(age), HttpStatus.OK);
+	}
+
+	// getByAgeGreaterThanEqual to
+	@GetMapping("/getByAgeGreaterThanEqual/{age}")
+	public ResponseEntity<List<User>> getByAgeGreaterThanEqual(@PathVariable int age) {
+		return new ResponseEntity<List<User>>(service.getByAgeGreaterThanEqual(age), HttpStatus.OK);
+	}
+
+	// getByGender
+	@GetMapping("/getByGender/{gender}")
+	public ResponseEntity<List<User>> getByGender(@PathVariable String gender) {
+		return new ResponseEntity<List<User>>(service.getByGender(gender), HttpStatus.OK);
 	}
 
 	// Post

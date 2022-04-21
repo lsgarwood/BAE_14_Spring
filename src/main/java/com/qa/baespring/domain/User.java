@@ -22,7 +22,7 @@ public class User {
 	// Properties of the class
 	// Creates a column called "first_name" or use @column to override name
 	// @Column(name = "firstname")
-	// Also use @Column to put a restraint on the column
+	// Also use @Column to put a restraint on the column - like nullable
 	@Column(nullable = false)
 	private String firstName;
 
@@ -34,26 +34,38 @@ public class User {
 	@Column(unique = true)
 	private String username;
 
+	// creates a column called "age"
+	@Column(nullable = false)
+	private int age;
+
+	// creates a column called "gender"
+	@Column(nullable = false)
+	private String gender;
+
 	// Default constructor
 	public User() {
 	}
 
 	// Constructors
 	// Used for CRUD- Creating/Inserting
-	public User(String firstName, String lastName, String userName) {
+	public User(String firstName, String lastName, String username, int age, String gender) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.username = userName;
+		this.username = username;
+		this.age = age;
+		this.gender = gender;
 	}
 
 	// Used for reading/selecting (and testing)
-	public User(long id, String firstName, String lastName, String username) {
+	public User(long id, String firstName, String lastName, String username, int age, String gender) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
+		this.age = age;
+		this.gender = gender;
 	}
 
 	// Getters and Setters
@@ -89,19 +101,36 @@ public class User {
 		this.username = userName;
 	}
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	// Generate toString()
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", getId()=" + getId() + ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName()
-				+ ", getUserName()=" + getUserName() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", age=" + age + ", gender=" + gender + ", getId()=" + getId() + ", getFirstName()=" + getFirstName()
+				+ ", getLastName()=" + getLastName() + ", getUserName()=" + getUserName() + ", getAge()=" + getAge()
+				+ ", getGender()=" + getGender() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass()
 				+ ", toString()=" + super.toString() + "]";
 	}
 
 	// Generate hashCode() and equals()
 	@Override
 	public int hashCode() {
-		return Objects.hash(firstName, id, lastName, username);
+		return Objects.hash(age, firstName, gender, id, lastName, username);
 	}
 
 	@Override
@@ -113,7 +142,8 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(firstName, other.firstName) && id == other.id && Objects.equals(lastName, other.lastName)
+		return age == other.age && Objects.equals(firstName, other.firstName) && Objects.equals(gender, other.gender)
+				&& id == other.id && Objects.equals(lastName, other.lastName)
 				&& Objects.equals(username, other.username);
 	}
 

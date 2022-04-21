@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.qa.baespring.domain.User;
+import com.qa.baespring.exceptions.UserNotFoundException;
 import com.qa.baespring.repo.UserRepo;
 
 @Service
@@ -26,13 +27,31 @@ public class UserService {
 
 	// get by Id (get one user)
 	public User getById(long id) {
-		return repo.findById(id).get(); // .get() will get user if its present or throw no such element exception
+		// return repo.findById(id).get(); // .get() will get user if its present or
+		// throw no such element exception
+		return repo.findById(id).orElseThrow(UserNotFoundException::new); // can also use .orElseThrow(() ->
+																			// EntityNotFoundException())
 	}
 
 	// get by username (one user)
 	public User getByUsername(String username) {
-		return repo.findUserByUsername(username).get();
+		return repo.findByUsername(username).get();
 
+	}
+
+	// get users by age
+	public List<User> getByAge(int age) {
+		return repo.findByAge(age);
+	}
+
+	// get users by age greater than or equal to
+	public List<User> getByAgeGreaterThanEqual(int age) {
+		return repo.findByAgeGreaterThanEqual(age);
+	}
+
+	// get users by gender
+	public List<User> getByGender(String gender) {
+		return repo.findByGender(gender);
 	}
 
 	// create a new user
@@ -46,6 +65,7 @@ public class UserService {
 		existing.setFirstName(user.getFirstName()); // change existing users firstName to new users firstName
 		existing.setLastName(user.getLastName()); // change existing users lastName to new users lastName
 		existing.setUserName(user.getUserName()); // change existing users username to new users username
+		existing.setAge(user.getAge()); // change existing users age to new age
 		return repo.saveAndFlush(existing); // send new user info back
 	}
 
