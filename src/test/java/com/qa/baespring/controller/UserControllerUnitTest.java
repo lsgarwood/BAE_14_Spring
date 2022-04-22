@@ -11,24 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.baespring.domain.User;
+import com.qa.baespring.service.UserService;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Sql(scripts = { "classpath:testschema.sql",
-		"classpath:testdata.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@ActiveProfiles("test")
-public class UserControllerIntegrationTest {
+@WebMvcTest
+public class UserControllerUnitTest {
 
 	@Autowired
 	private MockMvc mvc;
@@ -36,24 +31,28 @@ public class UserControllerIntegrationTest {
 	@Autowired
 	private ObjectMapper mapper;
 
+	@MockBean
+	private UserService service;
+
 	@Test
 	public void createTest() throws Exception {
 		User entry = new User("Anne", "Williams", "awilliams1", 30, "female");
 		String entryAsJSON = mapper.writeValueAsString(entry);
 
-		User result = new User(2L, "Anne", "Williams", "awilliams1", 30, "female");
-		String resultAsJSON = mapper.writeValueAsString(result);
+		Mockito.when(this.service.create(entry)).thenReturn(entry);
 
 		mvc.perform(post("/user/create").contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
-				.andExpect(status().isCreated()).andExpect(content().json(resultAsJSON));
+				.andExpect(status().isCreated()).andExpect(content().json(entryAsJSON));
 	}
 
 	@Test
 	public void getAllTest() throws Exception {
-		User user = new User(1L, "Peter", "Jones", "pjones1", 12, "male");
+		User entry = new User(1L, "Peter", "Jones", "pjones1", 12, "male");
 		List<User> output = new ArrayList<>();
-		output.add(user);
+		output.add(entry);
 		String outputAsJSON = mapper.writeValueAsString(output);
+
+		Mockito.when(this.service.getAll()).thenReturn(output);
 
 		mvc.perform(get("/user/getAll").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().json(outputAsJSON));
@@ -61,11 +60,13 @@ public class UserControllerIntegrationTest {
 
 	@Test
 	public void getByIdTest() throws Exception {
-		User result = new User(1L, "Peter", "Jones", "pjones1", 12, "male");
-		String resultAsJSON = mapper.writeValueAsString(result);
+		User entry = new User(1L, "Peter", "Jones", "pjones1", 12, "male");
+		String entryAsJSON = mapper.writeValueAsString(entry);
 
-		mvc.perform(get("/user/getById/1").contentType(MediaType.APPLICATION_JSON).content(resultAsJSON))
-				.andExpect(status().isOk()).andExpect(content().json(resultAsJSON));
+		Mockito.when(this.service.getById(1L)).thenReturn(entry);
+
+		mvc.perform(get("/user/getById/1").contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
+				.andExpect(status().isOk()).andExpect(content().json(entryAsJSON));
 	}
 
 	@Test
@@ -73,15 +74,17 @@ public class UserControllerIntegrationTest {
 		User entry = new User("Peter", "Jones", "pjones1", 14, "male");
 		String entryAsJSON = mapper.writeValueAsString(entry);
 
-		User result = new User(1L, "Peter", "Jones", "pjones1", 14, "male");
-		String resultAsJSON = mapper.writeValueAsString(result);
+		Mockito.when(this.service.update(1L, entry)).thenReturn(entry);
 
 		mvc.perform(put("/user/update/1").contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
-				.andExpect(status().isCreated()).andExpect(content().json(resultAsJSON));
+				.andExpect(status().isCreated()).andExpect(content().json(entryAsJSON));
 	}
 
 	@Test
 	public void deleteUserTest() throws Exception {
+
+		Mockito.when(this.service.delete(1l)).thenReturn(true);
+
 		mvc.perform(delete("/user/delete/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
 	}
 
