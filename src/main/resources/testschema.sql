@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS user CASCADE;
+CREATE TABLE user (
+	id INT AUTO_INCREMENT,
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	username VARCHAR(255) UNIQUE NOT NULL,
+	age INT(255) NOT NULL,
+	gender VARCHAR(255),
+	primary key (id)
+);

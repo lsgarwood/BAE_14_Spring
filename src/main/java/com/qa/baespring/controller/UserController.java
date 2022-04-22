@@ -19,7 +19,7 @@ import com.qa.baespring.service.UserService;
 
 @RestController
 @CrossOrigin // where it originates from- requests can come from anywhere on computer
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController { // All request handling
 
 	private UserService service;
